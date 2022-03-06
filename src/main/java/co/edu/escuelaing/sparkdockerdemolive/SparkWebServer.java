@@ -56,7 +56,8 @@ public class SparkWebServer {
 //
 //                        return error;
 //                    }
-                    return itemServiceImpl.getAllItems();
+                    itemServiceImpl.getAllItems();
+                    return "aun no";
                 });
             });
             path("/messages", () -> {
