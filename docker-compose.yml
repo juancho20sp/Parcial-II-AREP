@@ -1,3 +1,6 @@
+# CONNECT TO MONGO: sudo docker exec -it mongodb bash
+# See all DBs: show dbs
+# See all collections: show collections
 version: '2'
 
 services:
@@ -7,7 +10,9 @@ services:
       dockerfile: Dockerfile
     container_name: web
     ports:
-      - "8087:6000"
+      - 8087:6000
+#    expose:
+#      - "1234"
   db:
     image: mongo:3.6.1
     container_name: db
@@ -16,7 +21,16 @@ services:
       - mongodb_config:/data/configdb
     ports:
       - 27017:27017
+#    restart: unless-stopped
     command: mongod
+#  nginx:
+#    image: nginx:latest
+#    volumes:
+#      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+#    depends_on:
+#      - web
+#    ports:
+#      - "4000:4000"
 
 volumes:
   mongodb:
