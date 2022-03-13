@@ -1,47 +1,49 @@
 package co.edu.escuelaing.sparkdockerdemolive.services.items;
 
 import co.edu.escuelaing.sparkdockerdemolive.services.database.MongoDB;
+import com.mongodb.*;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import java.util.Iterator;
+
+import java.net.UnknownHostException;
+import java.util.*;
+
 import org.bson.Document;
-import com.mongodb.MongoClient;
 
 import org.json.*;
 import com.google.gson.JsonObject;
 //import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 
 public class ItemServiceImpl {
-    MongoClient mongoClient;
-    MongoDatabase database;
-    MongoCollection<Document> collection;
+    private MongoClient mongoClient;
+    private DB database;
+    private DBCollection collection;
 
     public ItemServiceImpl() {
-        // $
-        System.out.println("Creating ItemServiceImpl");
-
-        //this.mongoClient = MongoDB.getInstance();
-        this.mongoClient = new MongoClient( "localhost" , 27017 );
-
-        // $
-        System.out.println(this.mongoClient.toString());
-
-        this.database = this.mongoClient.getDatabase("items");
-
-        // $
-        System.out.println(this.database.toString());
-
-        this.collection = this.database.getCollection("myItems");
-
-        // $
-        System.out.println(this.collection.toString());
+        this.setupMongoDatabase();
+//        // $
+//        System.out.println("Creating ItemServiceImpl");
+//
+//        //this.mongoClient = MongoDB.getInstance();
+//        this.mongoClient = new MongoClient( "localhost" , 27017 );
+//
+//        // $
+//        System.out.println(this.mongoClient.toString());
+//
+//        this.database = this.mongoClient.getDatabase("items");
+//
+//        // $
+//        System.out.println(this.database.toString());
+//
+//        this.collection = this.database.getCollection("myItems");
+//
+//        // $
+//        System.out.println(this.collection.toString());
 
         //Creating a MongoDB client
 //        MongoClient mongo = new MongoClient( "localhost" , 27017 );
@@ -56,35 +58,59 @@ public class ItemServiceImpl {
         System.out.println("Collection: " + this.collection.toString());
     }
 
+    /**
+     * Connect to the Database
+     */
+    private void setupMongoDatabase() {
+        String URL = "localhost:27017";
+
+        this.mongoClient = new MongoClient(new MongoClientURI("mongodb://" + URL));
+        this.database = mongoClient.getDB("items");
+        this.collection = this.database.getCollection("myItems");
+    }
+
     public void getAllItems() {
-        FindIterable<Document> iterableDocument = this.collection.find();
+//        FindIterable<Document> iterableDocument = this.collection.find();
 
         System.out.println(" --- ");
         System.out.println("Pls value 1:");
         System.out.println(this.collection.find().toString());
 
-        Iterator it = iterableDocument.iterator();
-        while (it.hasNext()) {
-            System.out.println(it.next());
-        }
+//        Iterator it = iterableDocument.iterator();
+//        while (it.hasNext()) {
+//            System.out.println(it.next());
+//        }
 
 
 //        return this.collection.find().toArray();
 //        return json;
     }
 
-    public void addItem(String item){
-        JSONObject jsonObject = new JSONObject(item);
+    public List<DBObject> addItem(String item){
+        List<DBObject> response = new ArrayList<>();
 
-        String text = jsonObject.getString("text");
+        this.collection.insert(new BasicDBObject("text", item)
+                .append("date", new Date()));
 
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-        Date date = new Date(System.currentTimeMillis());
+        DBCursor cursor = this.collection.find().limit(10);
 
-        Document mongoItem = new Document()
-                .append("text", text)
-                .append("date", formatter.format(date));
+        while(cursor.hasNext()) {
+            response.add(cursor.next());
+        }
 
-        this.collection.insertOne(mongoItem);
+        return response;
+
+//        JSONObject jsonObject = new JSONObject(item);
+//
+//        String text = jsonObject.getString("text");
+//
+//        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+//        Date date = new Date(System.currentTimeMillis());
+//
+//        Document mongoItem = new Document()
+//                .append("text", text)
+//                .append("date", formatter.format(date));
+//
+//        this.collection.insertOne(mongoItem);
     }
 }

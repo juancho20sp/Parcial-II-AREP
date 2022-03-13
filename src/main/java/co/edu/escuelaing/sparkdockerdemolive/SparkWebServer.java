@@ -1,6 +1,9 @@
 package co.edu.escuelaing.sparkdockerdemolive;
 
 import co.edu.escuelaing.sparkdockerdemolive.services.items.ItemServiceImpl;
+import com.mongodb.DBObject;
+
+import java.util.List;
 
 import static spark.Spark.*;
 
@@ -67,8 +70,11 @@ public class SparkWebServer {
                     System.out.println(req.body());
 
                     if (req.body() != null) {
-                        itemServiceImpl.addItem(req.body());
+                        List<DBObject> data = itemServiceImpl.addItem(req.body());
+                        return data;
                     }
+
+                    return null;
 
 //                    String value = req.queryParams("value");
 //                    req.b
@@ -81,8 +87,6 @@ public class SparkWebServer {
 //
 //                        return error;
 //                    }
-                    String[] response = {req.body()};
-                    return response;
                 });
             });
         });
