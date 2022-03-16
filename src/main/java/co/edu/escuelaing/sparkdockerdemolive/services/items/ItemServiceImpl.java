@@ -1,10 +1,7 @@
 package co.edu.escuelaing.sparkdockerdemolive.services.items;
 
-import co.edu.escuelaing.sparkdockerdemolive.services.database.MongoDB;
 import com.mongodb.*;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 
 import java.net.UnknownHostException;
 import java.util.*;
@@ -21,11 +18,21 @@ import java.util.Iterator;
 
 public class ItemServiceImpl {
     private MongoClient mongoClient;
-    private DB database;
-    private DBCollection collection;
+    private final static String URL = "mongodb+srv://admin:admin@mycluster.79lwk.mongodb.net/?retryWrites=true&w=majority";
+
+//    private DB database;
+    private MongoDatabase database;
+//    private DBCollection collection;
+    private MongoCollection<Document> collection;
 
     public ItemServiceImpl() {
-        this.setupMongoDatabase();
+        ConnectionString connection = new ConnectionString(URL);
+        this.mongoClient = MongoClients.create(connection);
+        this.database = this.mongoClient.getDatabase("items");
+        this.collection = this.database.getCollection("myItems");
+
+        System.out.println("DATABASE CONNECTION STABLISHED");
+//        this.setupMongoDatabase();
 //        // $
 //        System.out.println("Creating ItemServiceImpl");
 //
@@ -53,52 +60,96 @@ public class ItemServiceImpl {
 //        MongoCollection<Document> collection = database.getCollection("myItems");
 
         // $
-        System.out.println("Client: " + this.mongoClient.toString());
-        System.out.println("Database: " + this.database.toString());
-        System.out.println("Collection: " + this.collection.toString());
+//        System.out.println("Client: " + mongoClient.toString());
+//        System.out.println("Database: " + this.database.toString());
+//        System.out.println("Collection: " + this.collection.toString());
     }
 
     /**
      * Connect to the Database
      */
-    private void setupMongoDatabase() {
+    public static void setupMongoDatabase() {
         String URL = "localhost:27017";
 
-        this.mongoClient = new MongoClient(new MongoClientURI("mongodb://" + URL));
-        this.database = mongoClient.getDB("items");
-        this.collection = this.database.getCollection("myItems");
-    }
+//        this.mongoClient = new MongoClient(new MongoClientURI("mongodb://" + URL));
 
-    public void getAllItems() {
-//        FindIterable<Document> iterableDocument = this.collection.find();
 
+//        this.database = this.mongoClient.getDatabase("items");
+//        this.collection = this.database.getCollection("myItems");
+
+        // $
         System.out.println(" --- ");
-        System.out.println("Pls value 1:");
-        System.out.println(this.collection.find().toString());
-
-//        Iterator it = iterableDocument.iterator();
-//        while (it.hasNext()) {
-//            System.out.println(it.next());
-//        }
-
-
-//        return this.collection.find().toArray();
-//        return json;
+        System.out.println("DATABASE CREATED");
     }
 
-    public List<DBObject> addItem(String item){
-        List<DBObject> response = new ArrayList<>();
+    public ArrayList<String> getAllItems() {
+        ArrayList<String> messages = new ArrayList<>();
 
-        this.collection.insert(new BasicDBObject("text", item)
-                .append("date", new Date()));
+        FindIterable fit = this.collection.find();
+        ArrayList<Document> docs = new ArrayList<>();
 
-        DBCursor cursor = this.collection.find().limit(10);
+        fit.into(docs);
+        docs.forEach(document -> {
+            String message = document.toJson();
+            messages.add(message);
+        });
 
-        while(cursor.hasNext()) {
-            response.add(cursor.next());
-        }
+        return messages;
+    }
 
-        return response;
+    public void addItem(String item){
+        Document myDocument = new Document();
+        myDocument.put("text", item);
+        myDocument.put("date", new Date());
+
+        this.collection.insertOne(myDocument);
+
+        // $
+        System.out.println("ITEM SUCCESSFULLY ADDED");
+
+//        MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+//        MongoDatabase database = mongoClient.getDatabase("items");
+//        MongoCollection<Document> myCollection = database.getCollection("myItems");
+//
+//        Document document = new Document();
+//        document.put("text", item);
+//        document.put("date", new Date());
+//
+//        // $
+//        System.out.println("DOCUMENT CREATED");
+//        System.out.println(document.toString());
+//
+//        myCollection.insertOne(document);
+//
+//        // $
+//        System.out.println("DOCUMENT INSERTED");
+
+
+
+//        List<DBObject> response = new ArrayList<>();
+//
+//        // $
+//        System.out.println(" --- ");
+//        System.out.println("RESPONSE ARRAY CREATED");
+//
+//        this.collection.insert(new BasicDBObject("text", item)
+//                .append("date", new Date()));
+//
+//        // $
+//        System.out.println("ITEM ADDED TO COLLECTION");
+//
+//        DBCursor cursor = this.collection.find().limit(10);
+//
+//        // $
+//        System.out.println("CURSOR DONE");
+//
+//
+//        while(cursor.hasNext()) {
+////            response.add(cursor.next());
+//            System.out.println("Value: " + cursor.next());
+//        }
+//
+//        return response;
 
 //        JSONObject jsonObject = new JSONObject(item);
 //

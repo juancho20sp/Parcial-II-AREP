@@ -4,9 +4,9 @@ const BASE_URL = `http://localhost:${PORT}`;
 
 // Elements
 const button = document.querySelector('#button');
+const fetchDataBtn = document.querySelector('#fetchDataBtn');
 const textArea = document.querySelector('#textarea');
 const list = document.querySelector('#list');
-
 
 // Functions
 const render = (elements) => {
@@ -15,23 +15,29 @@ const render = (elements) => {
     elements.forEach(element => {
         const newListItem = document.createElement('li');
         newListItem.classList.add('list-group-item');
-        newListItem.innerText = element;
+        newListItem.innerText = `${element.text} : ${element.date}`;
 
         list.appendChild(newListItem);
     })
 }
 
+const cleanData = (data) => {
+    const cleanedData = data.map(data => {
+        return {
+            ...JSON.parse(data.text),
+            date: new Date(data.date.$date)
+        }
+    })
+
+    return cleanedData;
+}
+
 const sendData = async(data) => {    
     const options = {
         method: 'POST',
-        // mode: 'cors',
-        // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        // credentials: 'same-origin', // include, *same-origin, omit
         headers: {
           'Content-Type': 'application/json'
         },
-        // redirect: 'follow', // manual, *follow, error
-        // referrerPolicy: 'no-referrer', 
         body: JSON.stringify({
             text: data
         }) 
@@ -40,11 +46,32 @@ const sendData = async(data) => {
     const response = await fetch(`${BASE_URL}/api/v1/messages`, options);
     const receivedData = await response.json();
 
-    render(receivedData);
-    // render([data]);
+    // $
+    // receivedData.splice(0, 1);
+
+
+    const cleanedData = cleanData(receivedData);
+
+    render(cleanedData);
 }
 
+const getAllElements = async() => {
+    const options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+    }
 
+    const response = await fetch(`${BASE_URL}/api/v1/messages`, options);
+    const receivedData = await response.json();
+
+    // $
+    // receivedData.splice(0, 1);
+
+    const cleanedData = cleanData(receivedData);
+    render(cleanedData);
+}
 
 
 // Event listeners
@@ -54,3 +81,9 @@ button.addEventListener('click', (event) => {
     sendData(textArea.value);   
     textArea.value = '';
 });
+
+fetchDataBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    getAllElements();
+})

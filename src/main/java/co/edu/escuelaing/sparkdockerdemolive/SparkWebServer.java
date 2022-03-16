@@ -19,7 +19,10 @@ public class SparkWebServer {
         port(getPort());
 
         // $
+        System.out.println("intento #1");
         System.out.println("Spark running on port: " + getPort());
+
+//        ItemServiceImpl.setupMongoDatabase();
 
         get("hello", (req,res) -> "Hello Docker!");
 
@@ -49,44 +52,28 @@ public class SparkWebServer {
             path("/messages", () -> {
                 get("", (req, res) -> {
                     res.type("application/json");
-//                    String value = req.queryParams("value");
-//
-//                    if(value != null && converterServiceImpl.isValueValid(value)) {
-//                        return converterServiceImpl.celsiusToFahrenheit(Double.parseDouble(value));
-//                    } else {
-//                        JsonObject error = errors.formatError();
-//                        error.addProperty("value", value);
-//
-//                        return error;
-//                    }
-                    itemServiceImpl.getAllItems();
-                    return "aun no";
+
+                    System.out.println("GET RECEIVED");
+
+                    return itemServiceImpl.getAllItems();
                 });
             });
             path("/messages", () -> {
                 post("", (req, res) -> {
                     res.type("application/json");
 
+                    // $
+                    System.out.println("POST RECEIVED");
                     System.out.println(req.body());
 
                     if (req.body() != null) {
-                        List<DBObject> data = itemServiceImpl.addItem(req.body());
-                        return data;
+                        itemServiceImpl.addItem(req.body());
+                        // $
+                        System.out.println("ITEM ADDED");
+//                        return data;
                     }
 
-                    return null;
-
-//                    String value = req.queryParams("value");
-//                    req.b
-//
-//                    if(value != null && converterServiceImpl.isValueValid(value)) {
-//                        return converterServiceImpl.fahrenheitToCelsius(Double.parseDouble(value));
-//                    } else {
-//                        JsonObject error = errors.formatError();
-//                        error.addProperty("value", value);
-//
-//                        return error;
-//                    }
+                    return itemServiceImpl.getAllItems();
                 });
             });
         });

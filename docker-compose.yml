@@ -4,15 +4,6 @@
 version: '2'
 
 services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: web
-    ports:
-      - 8087:6000
-#    expose:
-#      - "1234"
   db:
     image: mongo:3.6.1
     container_name: db
@@ -20,9 +11,22 @@ services:
       - mongodb:/data/db
       - mongodb_config:/data/configdb
     ports:
-      - 27017:27017
-#    restart: unless-stopped
+      - "27017:27017"
+    #    restart: unless-stopped
     command: mongod
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: web
+    ports:
+      - "8087:6000"
+    depends_on:
+      - db
+#    expose:
+#      - "1234"
+
 #  nginx:
 #    image: nginx:latest
 #    volumes:
