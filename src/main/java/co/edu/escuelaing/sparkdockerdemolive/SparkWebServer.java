@@ -1,10 +1,6 @@
 package co.edu.escuelaing.sparkdockerdemolive;
 
 import co.edu.escuelaing.sparkdockerdemolive.services.items.ItemServiceImpl;
-import com.mongodb.DBObject;
-
-import java.util.List;
-
 import static spark.Spark.*;
 
 // java -cp "target/classes;target/dependency/*" co.edu.escuelaing.sparkdockerdemolive.SparkWebServer
