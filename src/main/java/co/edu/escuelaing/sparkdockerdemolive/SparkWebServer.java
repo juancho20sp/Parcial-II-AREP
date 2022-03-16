@@ -11,18 +11,10 @@ import static spark.Spark.*;
 public class SparkWebServer {
 
     public static void main( String[] args ) {
-//        final ConverterServiceImpl converterServiceImpl = new ConverterServiceImpl();
-//        final Errors errors = new Errors();
         final ItemServiceImpl itemServiceImpl = new ItemServiceImpl();
 
         // Set the port
         port(getPort());
-
-        // $
-        System.out.println("intento #1");
-        System.out.println("Spark running on port: " + getPort());
-
-//        ItemServiceImpl.setupMongoDatabase();
 
         get("hello", (req,res) -> "Hello Docker!");
 
@@ -42,11 +34,7 @@ public class SparkWebServer {
                     return "OK";
                 });
 
-
-
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
-
-
 
         path("/api/v1", () -> {
             path("/messages", () -> {
@@ -62,15 +50,8 @@ public class SparkWebServer {
                 post("", (req, res) -> {
                     res.type("application/json");
 
-                    // $
-                    System.out.println("POST RECEIVED");
-                    System.out.println(req.body());
-
                     if (req.body() != null) {
                         itemServiceImpl.addItem(req.body());
-                        // $
-                        System.out.println("ITEM ADDED");
-//                        return data;
                     }
 
                     return itemServiceImpl.getAllItems();
