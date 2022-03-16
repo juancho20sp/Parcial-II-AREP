@@ -1,6 +1,9 @@
 # CONNECT TO MONGO: sudo docker exec -it mongodb bash
 # See all DBs: show dbs
 # See all collections: show collections
+
+# DOCKER COMPOSE ON AWS: https://gist.github.com/npearce/6f3c7826c7499587f00957fee62f8ee9
+# Problem with docker-compose aws: https://forums.docker.com/t/couldnt-connect-to-docker-daemon-at-http-docker-localhost-is-it-running/87257/2
 version: '2'
 
 services:
