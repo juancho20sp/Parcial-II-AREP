@@ -125,7 +125,6 @@ fabric.properties
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -147,7 +146,7 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
-.mvn/wrapper/maven-wrapper.jar
+#.mvn/wrapper/maven-wrapper.jar
 
 # Eclipse m2e generated files
 # Eclipse Core
@@ -180,7 +179,6 @@ R/unit-tests.out
 R/cran-check.out
 R/pkg/vignettes/sparkr-vignettes.html
 R/pkg/tests/fulltests/Rplots.pdf
-build/*.jar
 build/apache-maven*
 build/scala*
 build/zinc*
