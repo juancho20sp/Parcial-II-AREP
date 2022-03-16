@@ -24,6 +24,17 @@ services:
       - "8087:6000"
     depends_on:
       - db
+
+  html:
+    build:
+      context: ./Frontend/
+      dockerfile: Dockerfile
+    container_name: html
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+      - web
 #    expose:
 #      - "1234"
 

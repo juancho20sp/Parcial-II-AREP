@@ -22,12 +22,6 @@ const render = (elements) => {
 }
 
 const cleanData = (data) => {
-    if (data.length > 10) {
-        data = data.reverse();
-        data.splice(0, 10);
-    }
-
-
     const cleanedData = data.map(data => {
         return {
             ...JSON.parse(data.text),
@@ -52,6 +46,10 @@ const sendData = async(data) => {
     const response = await fetch(`${BASE_URL}/api/v1/messages`, options);
     const receivedData = await response.json();
 
+    // $
+    // receivedData.splice(0, 1);
+
+
     const cleanedData = cleanData(receivedData);
 
     render(cleanedData);
@@ -67,7 +65,10 @@ const getAllElements = async() => {
 
     const response = await fetch(`${BASE_URL}/api/v1/messages`, options);
     const receivedData = await response.json();
-  
+
+    // $
+    // receivedData.splice(0, 1);
+
     const cleanedData = cleanData(receivedData);
     render(cleanedData);
 }
