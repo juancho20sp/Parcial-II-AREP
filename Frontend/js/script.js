@@ -1,6 +1,7 @@
 // Config
 const PORT = 8087;
-const BASE_URL = `http://localhost:${PORT}`;
+const BASE_URL = `http://${window.location.hostname}:${PORT}`;
+//http://ec2-54-166-93-83.compute-1.amazonaws.com:8087/
 
 // Elements
 const button = document.querySelector('#button');
