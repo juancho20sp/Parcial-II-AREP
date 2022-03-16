@@ -18,14 +18,11 @@ public class ItemServiceImpl {
     public ItemServiceImpl() {
         ConnectionString connection = new ConnectionString(URL);
         this.mongoClient = MongoClients.create(connection);
-//        this.database = this.mongoClient.getDatabase("items");
-//        this.collection = this.database.getCollection("myItems");
+        this.database = this.mongoClient.getDatabase("items");
+        this.collection = this.database.getCollection("myItems");
     }
 
     public ArrayList<String> getAllItems() {
-        this.database = this.mongoClient.getDatabase("items");
-        this.collection = this.database.getCollection("myItems");
-
         ArrayList<String> messages = new ArrayList<>();
 
         FindIterable fit = this.collection.find();
@@ -41,8 +38,8 @@ public class ItemServiceImpl {
     }
 
     public void addItem(String item){
-        this.database = this.mongoClient.getDatabase("items");
-        this.collection = this.database.getCollection("myItems");
+        System.out.println(" --- ITEM ---");
+        System.out.println(item);
 
         Document myDocument = new Document();
         myDocument.put("text", item);
