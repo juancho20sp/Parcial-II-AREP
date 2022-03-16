@@ -22,11 +22,11 @@ const render = (elements) => {
 }
 
 const cleanData = (data) => {
+    data = data.reverse();
+
     if (data.length > 10) {
-        data = data.reverse();
         data.splice(0, 10);
     }
-
 
     const cleanedData = data.map(data => {
         return {

@@ -22,6 +22,12 @@ const render = (elements) => {
 }
 
 const cleanData = (data) => {
+    data = data.reverse();
+
+    if (data.length > 10) {
+        data.length = 10;
+    }
+
     const cleanedData = data.map(data => {
         return {
             ...JSON.parse(data.text),
@@ -32,7 +38,7 @@ const cleanData = (data) => {
     return cleanedData;
 }
 
-const sendData = async(data) => {    
+const sendData = async(data) => {
     const options = {
         method: 'POST',
         headers: {
@@ -40,15 +46,11 @@ const sendData = async(data) => {
         },
         body: JSON.stringify({
             text: data
-        }) 
+        })
     }
 
     const response = await fetch(`${BASE_URL}/api/v1/messages`, options);
     const receivedData = await response.json();
-
-    // $
-    // receivedData.splice(0, 1);
-
 
     const cleanedData = cleanData(receivedData);
 
@@ -65,9 +67,6 @@ const getAllElements = async() => {
 
     const response = await fetch(`${BASE_URL}/api/v1/messages`, options);
     const receivedData = await response.json();
-
-    // $
-    // receivedData.splice(0, 1);
 
     const cleanedData = cleanData(receivedData);
     render(cleanedData);

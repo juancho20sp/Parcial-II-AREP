@@ -12,7 +12,6 @@ services:
       - mongodb_config:/data/configdb
     ports:
       - "27017:27017"
-    #    restart: unless-stopped
     command: mongod
 
   web:
