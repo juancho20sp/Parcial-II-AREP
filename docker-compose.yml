@@ -9,6 +9,23 @@
 # DOCKER COMPOSE WITH SCALING
 # sudo docker-compose up --scale web=3
 
+# Install GIT AWS
+# - sudo yum update -y
+# - sudo yum install git -y
+
+# Install Docker
+# - sudo yum install docker -y
+# - sudo usermod -a -G docker ec2-user
+
+# Install Docker-compose
+# - sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+# - sudo chmod +x /usr/local/bin/docker-compose
+
+# Solve problem with docker-compose
+# - sudo usermod -aG docker $USER
+# - sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+# - sudo service docker restart
+
 # Run in AWS
 # - Connect to the machine
 # - Pull changes
