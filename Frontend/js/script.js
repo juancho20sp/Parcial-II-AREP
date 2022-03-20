@@ -1,7 +1,10 @@
 // Config
-const PORT = 8087;
-const BASE_URL = `http://${window.location.hostname}:${PORT}`;
+const ports = [8087, 8088, 8089]
+let BASE_URL = `http://${window.location.hostname}:${ports[0]}`;
 //http://ec2-54-166-93-83.compute-1.amazonaws.com:8087/
+
+// Round Robin
+let actualPort = 0;
 
 // Elements
 const button = document.querySelector('#button');
@@ -10,6 +13,16 @@ const textArea = document.querySelector('#textarea');
 const list = document.querySelector('#list');
 
 // Functions
+const rotateServer = () => {
+    actualPort = (actualPort + 1) % ports.length;
+
+    BASE_URL = `http://${window.location.hostname}:${ports[actualPort]}`;
+
+    // $
+    console.log(`Port #${actualPort} -> URL: ${BASE_URL}`);
+}
+
+
 const render = (elements) => {
     list.innerHTML = '';
 
@@ -56,6 +69,9 @@ const sendData = async(data) => {
     const cleanedData = cleanData(receivedData);
 
     render(cleanedData);
+
+    // Round Robin
+    rotateServer();
 }
 
 const getAllElements = async() => {
@@ -71,6 +87,9 @@ const getAllElements = async() => {
 
     const cleanedData = cleanData(receivedData);
     render(cleanedData);
+
+    // Round Robin
+    rotateServer();
 }
 
 

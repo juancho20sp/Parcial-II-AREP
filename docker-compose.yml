@@ -5,6 +5,10 @@
 # DOCKER COMPOSE ON AWS: https://gist.github.com/npearce/6f3c7826c7499587f00957fee62f8ee9
 # Problem with docker-compose aws: https://forums.docker.com/t/couldnt-connect-to-docker-daemon-at-http-docker-localhost-is-it-running/87257/2
 # ec2-54-166-93-83.compute-1.amazonaws.com
+
+# DOCKER COMPOSE WITH SCALING
+# sudo docker-compose up --scale web=3
+
 version: '3'
 
 services:
@@ -12,11 +16,31 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: web
+#    container_name: web
     ports:
-      - "8087:6000"
+      - "8087-8089:6000"
     links:
       - db
+
+#  web2:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: web2
+#    ports:
+#      - "8088:6000"
+#    links:
+#      - db
+#
+#  web3:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: web3
+#    ports:
+#      - "8089:6000"
+#    links:
+#      - db
 
   html:
     build:
@@ -27,9 +51,8 @@ services:
       - "80:80"
     links:
       - web
-#    depends_on:
-#      - db
-#      - web
+#      - web2
+#      - web3
 
   db:
     image: mongo:3.6.1
@@ -37,21 +60,7 @@ services:
     volumes:
       - mongodb:/data/db
       - mongodb_config:/data/configdb
-#    ports:
-#      - "27017:27017"
     command: mongod
-
-#    expose:
-#      - "1234"
-
-#  nginx:
-#    image: nginx:latest
-#    volumes:
-#      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-#    depends_on:
-#      - web
-#    ports:
-#      - "4000:4000"
 
 volumes:
   mongodb:

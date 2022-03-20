@@ -16,7 +16,6 @@ import java.util.function.Consumer;
 
 public class MongoDBConnection {
     private String url = "db";
-//    private String url = "localhost";
     private int port = 27017;
     private MongoClient mongoClient = null;
     private MongoDatabase mongoDatabase = null;
@@ -38,8 +37,6 @@ public class MongoDBConnection {
     }
 
     public ArrayList<String> addItem(String item){
-        System.out.println(" --- ITEM ---");
-        System.out.println(item);
         ArrayList<String> documents = new ArrayList<>();
 
         Document myDocument = new Document();
@@ -58,16 +55,6 @@ public class MongoDBConnection {
         FindIterable<Document> result = this.mongoCollection.find();
 
         result.forEach((Consumer<? super Document>) document -> messages.add(document.toJson()));
-
-//        FindIterable fit = this.mongoCollection.find();
-//        ArrayList<Document> docs = new ArrayList<>();
-//
-//        fit.into(docs);
-//        docs.forEach(document -> {
-//            String message = document.toJson();
-//            messages.add(message);
-//        });
-
         return messages;
     }
 

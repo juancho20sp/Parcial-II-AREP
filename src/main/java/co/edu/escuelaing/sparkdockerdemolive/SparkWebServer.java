@@ -1,7 +1,6 @@
 package co.edu.escuelaing.sparkdockerdemolive;
 
 import co.edu.escuelaing.sparkdockerdemolive.services.database.MongoDBConnection;
-//import co.edu.escuelaing.sparkdockerdemolive.services.items.ItemServiceImpl;
 import java.util.ArrayList;
 
 import static spark.Spark.*;
@@ -9,7 +8,6 @@ import static spark.Spark.*;
 // java -cp "target/classes;target/dependency/*" co.edu.escuelaing.sparkdockerdemolive.SparkWebServer
 public class SparkWebServer {
     public static void main( String[] args ) {
-//        final ItemServiceImpl itemServiceImpl = new ItemServiceImpl();
         // Database connection and operations
         MongoDBConnection mongoDBConnection = new MongoDBConnection();
 
@@ -39,35 +37,12 @@ public class SparkWebServer {
         path("/api/v1", () -> {
             path("/messages", () -> {
                 get("", (req, res) -> {
-                    // $
-                    System.out.println("GET RECEIVED");
-
                     res.type("application/json");
                     mongoDBConnection.createConnection();
 
-                    // $
-                    System.out.println(" --- --- ");
-                    System.out.println("CONNECTION CREATED");
-                    System.out.println(" --- --- ");
-
                     ArrayList<String> allItems = mongoDBConnection.getAllItems();
 
-                    // $
-                    System.out.println(" --- --- ");
-                    System.out.println("TRANSACTION DONE");
-                    System.out.println(" --- --- ");
-
                     mongoDBConnection.closeConnection();
-
-                    // $
-                    System.out.println(" --- --- ");
-                    System.out.println("CONNECTION CLOSED");
-                    System.out.println(" --- --- ");
-
-                    // $
-                    System.out.println(" --- --- ");
-                    System.out.println(allItems);
-                    System.out.println(" --- --- ");
 
                     return allItems;
                 });
@@ -81,15 +56,11 @@ public class SparkWebServer {
                         mongoDBConnection.addItem(req.body());
                     }
 
-                    // $
-                    System.out.println("INSERTED AND WAITING FOR ALL ITEMS");
-
                     ArrayList<String> allItems = mongoDBConnection.getAllItems();
 
                     mongoDBConnection.closeConnection();
 
                     return allItems;
-//                    return itemServiceImpl.getAllItems();
                 });
             });
         });
