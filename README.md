@@ -36,7 +36,7 @@ http://localhost:8087
 **Base URL (AWS)**
 
 ```url
-https://ec2-3-87-21-7.compute-1.amazonaws.com:8087
+http://ec2-3-91-195-184.compute-1.amazonaws.com/
 ```
 
 ### ENDPOINTS
@@ -79,7 +79,7 @@ http://localhost:8087
 
 AWS:
 ```url
-https://ec2-3-87-21-7.compute-1.amazonaws.com:8087
+http://ec2-3-91-195-184.compute-1.amazonaws.com:8087 | 8088 | 8089
 ```
 
 **Frontend**
@@ -91,7 +91,7 @@ http://localhost:80
 
 AWS:
 ```url
-https://ec2-3-87-21-7.compute-1.amazonaws.com:80
+http://ec2-3-91-195-184.compute-1.amazonaws.com/:80
 ```
 
 ## Run the project locally!
