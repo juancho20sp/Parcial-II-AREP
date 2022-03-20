@@ -11,6 +11,18 @@ This is a simple _Client-Server_ architecture using an **APIRest** approach. The
 
 The **frontend** is served in a docker container which uses de **nginx** image as base, the **backend** is served in a docker container using the **openjdk:8** image and the **database** is served in a docker container which uses the **mongo:3.6.1** image.
 
+## Round Robin
+All the logic regarding to _Round Robin Traffic Balancer_ is done in the **Frontend** container. In the file Frontend/js/script.js you will find a function called **_rotateServer_** which is the function that switches between the _Backend_ containers.
+
+### Evidence
+- Project Working:
+![](img/MessagesWorking.png)
+
+- Round Robin:
+![](img/RoundRobin1.png)
+![](img/RoundRobin2.png)
+
+
 ### API
 
 ---
