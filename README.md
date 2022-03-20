@@ -19,8 +19,9 @@ All the logic regarding to _Round Robin Traffic Balancer_ is done in the **Front
 ![](img/MessagesWorking.png)
 
 - Round Robin:
-<br />
+<br>
 ![](img/RoundRobin2.png)
+
 ![](img/RoundRobin1.png)
 
 
