@@ -9,6 +9,12 @@
 # DOCKER COMPOSE WITH SCALING
 # sudo docker-compose up --scale web=3
 
+# Run in AWS
+# - Connect to the machine
+# - Pull changes
+# - sudo service docker start
+# - sudo docker-compose up --scale web=3
+
 version: '3'
 
 services:
