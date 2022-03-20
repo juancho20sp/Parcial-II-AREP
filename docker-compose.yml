@@ -4,19 +4,10 @@
 
 # DOCKER COMPOSE ON AWS: https://gist.github.com/npearce/6f3c7826c7499587f00957fee62f8ee9
 # Problem with docker-compose aws: https://forums.docker.com/t/couldnt-connect-to-docker-daemon-at-http-docker-localhost-is-it-running/87257/2
-version: '2'
+# ec2-54-166-93-83.compute-1.amazonaws.com
+version: '3'
 
 services:
-  db:
-    image: mongo:3.6.1
-    container_name: db
-    volumes:
-      - mongodb:/data/db
-      - mongodb_config:/data/configdb
-    ports:
-      - "27017:27017"
-    command: mongod
-
   web:
     build:
       context: .
@@ -24,7 +15,7 @@ services:
     container_name: web
     ports:
       - "8087:6000"
-    depends_on:
+    links:
       - db
 
   html:
@@ -34,9 +25,22 @@ services:
     container_name: html
     ports:
       - "80:80"
-    depends_on:
-      - db
+    links:
       - web
+#    depends_on:
+#      - db
+#      - web
+
+  db:
+    image: mongo:3.6.1
+    container_name: db
+    volumes:
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
+#    ports:
+#      - "27017:27017"
+    command: mongod
+
 #    expose:
 #      - "1234"
 
