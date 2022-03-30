@@ -16,13 +16,13 @@ public class HttpRequestMaker {
     RoundRobin roundRobin = new RoundRobin();
 
     public String makeRequest(Request req, String url) {
-        String[] urlParts = req.url().split(":" + req.port());
+        String[] urlParts = url.split(":" + req.port());
 
         String baseURL = urlParts[0];
 
         String value = req.queryParams("value");
 
-        String targetURL = baseURL + ":" + roundRobin.getTargetPort() + req.uri() + "?value=" + value;
+        String targetURL = baseURL + ":" + req.port() + req.uri() + "?value=" + value;
 
 
         String htmlResponse = "";

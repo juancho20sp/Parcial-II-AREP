@@ -13,10 +13,6 @@ public class RoundRobin {
         actualPort = (actualPort + 1) % totalPorts;
     }
 
-    public int[] getPorts() {
-        return ports;
-    }
-
     public int getActualPort() {
         rotateServer();
 
