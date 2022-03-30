@@ -1,20 +1,19 @@
-package co.edu.escuelaing.sparkdockerdemolive;
+package co.edu.escuelaing.parcial2;
 
-import co.edu.escuelaing.sparkdockerdemolive.services.database.MongoDBConnection;
-import java.util.ArrayList;
-
+import co.edu.escuelaing.parcial2.services.MathServiceImpl;
+import co.edu.escuelaing.parcial2.utils.Errors;
+import com.google.gson.JsonObject;
 import static spark.Spark.*;
 
-// java -cp "target/classes;target/dependency/*" co.edu.escuelaing.sparkdockerdemolive.SparkWebServer
+// java -cp "target/classes;target/dependency/*" co.edu.escuelaing.parcial2.SparkWebServer
 public class SparkWebServer {
     public static void main( String[] args ) {
-        // Database connection and operations
-        MongoDBConnection mongoDBConnection = new MongoDBConnection();
+        final MathServiceImpl mathServiceImpl = new MathServiceImpl();
+        final Errors errors = new Errors();
 
         // Set the port
         port(getPort());
 
-        get("hello", (req,res) -> "Hello Docker!");
 
         // Allow CORS
         options("/*",
@@ -35,32 +34,36 @@ public class SparkWebServer {
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 
         path("/api/v1", () -> {
-            path("/messages", () -> {
+            path("/cos", () -> {
                 get("", (req, res) -> {
                     res.type("application/json");
-                    mongoDBConnection.createConnection();
 
-                    ArrayList<String> allItems = mongoDBConnection.getAllItems();
+                    String value = req.queryParams("value");
 
-                    mongoDBConnection.closeConnection();
+                    if(value != null && mathServiceImpl.isValueValid(value)) {
+                        return mathServiceImpl.calculateCos(Double.parseDouble(value));
+                    } else {
+                        JsonObject error = errors.formatError();
+                        error.addProperty("value", value);
 
-                    return allItems;
+                        return error;
+                    }
                 });
             });
-            path("/messages", () -> {
-                post("", (req, res) -> {
+            path("/exp", () -> {
+                get("", (req, res) -> {
                     res.type("application/json");
-                    mongoDBConnection.createConnection();
 
-                    if (req.body() != null) {
-                        mongoDBConnection.addItem(req.body());
+                    String value = req.queryParams("value");
+
+                    if(value != null && mathServiceImpl.isValueValid(value)) {
+                        return mathServiceImpl.calculateExp(Double.parseDouble(value));
+                    } else {
+                        JsonObject error = errors.formatError();
+                        error.addProperty("value", value);
+
+                        return error;
                     }
-
-                    ArrayList<String> allItems = mongoDBConnection.getAllItems();
-
-                    mongoDBConnection.closeConnection();
-
-                    return allItems;
                 });
             });
         });

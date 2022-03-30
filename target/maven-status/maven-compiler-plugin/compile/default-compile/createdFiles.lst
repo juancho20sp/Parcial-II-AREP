@@ -1,2 +1,4 @@
-co\edu\escuelaing\sparkdockerdemolive\services\database\MongoDBConnection.class
-co\edu\escuelaing\sparkdockerdemolive\SparkWebServer.class
+co/edu/escuelaing/parcial2/utils/Errors.class
+co/edu/escuelaing/parcial2/services/MathService.class
+co/edu/escuelaing/parcial2/services/MathServiceImpl.class
+co/edu/escuelaing/parcial2/SparkWebServer.class
