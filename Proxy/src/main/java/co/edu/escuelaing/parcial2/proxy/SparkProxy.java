@@ -1,16 +1,6 @@
-package main.java.co.edu.escuelaing.parcial2;
+package co.edu.escuelaing.parcial2.proxy;
 
-import main.java.co.edu.escuelaing.parcial2.services.HttpRequestMaker;
-import main.java.co.edu.escuelaing.parcial2.services.RoundRobin;
-
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import co.edu.escuelaing.parcial2.proxy.services.HttpRequestMaker;
 
 import static spark.Spark.*;
 

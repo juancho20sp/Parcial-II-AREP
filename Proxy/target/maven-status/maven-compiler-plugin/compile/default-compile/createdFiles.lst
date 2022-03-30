@@ -1,3 +1,3 @@
-main/java/co/edu/escuelaing/parcial2/services/RoundRobin.class
-main/java/co/edu/escuelaing/parcial2/services/HttpRequestMaker.class
-main/java/co/edu/escuelaing/parcial2/SparkProxy.class
+co/edu/escuelaing/parcial2/proxy/services/HttpRequestMaker.class
+co/edu/escuelaing/parcial2/proxy/services/RoundRobin.class
+co/edu/escuelaing/parcial2/proxy/SparkProxy.class
