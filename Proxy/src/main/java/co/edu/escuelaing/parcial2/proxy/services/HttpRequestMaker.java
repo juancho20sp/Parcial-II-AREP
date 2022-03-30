@@ -15,7 +15,7 @@ import java.util.Set;
 public class HttpRequestMaker {
     RoundRobin roundRobin = new RoundRobin();
 
-    public String makeRequest(Request req) {
+    public String makeRequest(Request req, String url) {
         String[] urlParts = req.url().split(":" + req.port());
 
         String baseURL = urlParts[0];
