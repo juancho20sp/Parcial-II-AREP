@@ -1,16 +1,24 @@
 // Config
-const ports = [8087, 8088, 8089]
+const ports = [8087, 8088]
 let BASE_URL = `http://${window.location.hostname}:${ports[0]}`;
 //http://ec2-54-166-93-83.compute-1.amazonaws.com:8087/
 
 // Round Robin
 let actualPort = 0;
 
-// Elements
-const button = document.querySelector('#button');
-const fetchDataBtn = document.querySelector('#fetchDataBtn');
-const textArea = document.querySelector('#textarea');
-const list = document.querySelector('#list');
+const HIDDEN = 'hidden';
+const WARNING = 'warning';
+const INPUT = 'input';
+const SELECT = 'select';
+
+const button = document.querySelector('.main--button');
+const valueInput = document.querySelector('.input--container__input');
+const operationSelect = document.querySelector('.input-units--select');
+const inputError = document.querySelector('.input--container__error');
+const resultContainer = document.querySelector('.main--result__container');
+const resultText = document.querySelector('.main--result');
+const resultValue = document.querySelector('.main--result__value');
+const resultLoader = document.querySelector('.main--result__loader');
 
 // Functions
 const rotateServer = () => {
@@ -18,91 +26,82 @@ const rotateServer = () => {
 
     BASE_URL = `http://${window.location.hostname}:${ports[actualPort]}`;
 
-    // $
     console.log(`Port #${actualPort} -> URL: ${BASE_URL}`);
 }
 
+const validateFields = () => {
+    const value = valueInput.value;
+    const option = operationSelect.value; 
+    
+    let areFieldsValid = false;
 
-const render = (elements) => {
-    list.innerHTML = '';
-
-    elements.forEach(element => {
-        const newListItem = document.createElement('li');
-        newListItem.classList.add('list-group-item');
-        newListItem.innerText = `${element.text} : ${element.date}`;
-
-        list.appendChild(newListItem);
-    })
-}
-
-const cleanData = (data) => {
-    data = data.reverse();
-
-    if (data.length > 10) {
-        data.length = 10;
+    // Input
+    if (value.length === 0) {
+        valueInput.classList.add(WARNING);
+    } else {
+        valueInput.classList.remove(WARNING);
     }
 
-    const cleanedData = data.map(data => {
-        return {
-            ...JSON.parse(data.text),
-            date: new Date(data.date.$date)
+    // Select
+    if (option < 0) {
+        operationSelect.classList.add(WARNING);
+    } else {
+        operationSelect.classList.remove(WARNING);
+    }
+
+    // Error label
+    if (value.length === 0 || option < 0) {
+        inputError.classList.remove(HIDDEN);
+        resultContainer.classList.add(HIDDEN);
+    } else {
+        inputError.classList.add(HIDDEN);
+        areFieldsValid = true;
+    }
+
+    return areFieldsValid;
+
+}
+
+const sendRequest = async () => {
+    const areFieldsValid = validateFields();
+
+    if (areFieldsValid) {
+        // 0: COS || 1: Fahrenheit
+        const operation = operationSelect.value === '0' ? 'cos' : 'exp';
+        const value = valueInput.value;
+
+        const url = `${BASE_URL}/${operation}?value=${value}`;
+
+        try {
+            // Show loader
+            resultContainer.classList.remove(HIDDEN);
+            resultLoader.classList.remove(HIDDEN);
+            resultText.classList.add(HIDDEN); 
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+            });
+    
+            const data = await response.json();
+
+            if (data) {
+                resultText.classList.remove(HIDDEN); 
+
+                resultValue.innerHTML = `${data?.output}`
+            }
+
+        } catch(err) {
+            console.error(err.message);
+
+        } finally {
+            resultLoader.classList.add(HIDDEN);
         }
-    })
-
-    return cleanedData;
-}
-
-const sendData = async(data) => {
-    const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            text: data
-        })
+        
     }
-
-    const response = await fetch(`${BASE_URL}/api/v1/messages`, options);
-    const receivedData = await response.json();
-
-    const cleanedData = cleanData(receivedData);
-
-    render(cleanedData);
-
-    // Round Robin
-    rotateServer();
-}
-
-const getAllElements = async() => {
-    const options = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-    }
-
-    const response = await fetch(`${BASE_URL}/api/v1/messages`, options);
-    const receivedData = await response.json();
-
-    const cleanedData = cleanData(receivedData);
-    render(cleanedData);
-
-    // Round Robin
-    rotateServer();
 }
 
 
-// Event listeners
-button.addEventListener('click', (event) => {
-    event.preventDefault();
-
-    sendData(textArea.value);   
-    textArea.value = '';
-});
-
-fetchDataBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-
-    getAllElements();
-})
+button.addEventListener('click', sendRequest);

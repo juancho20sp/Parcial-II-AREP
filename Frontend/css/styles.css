@@ -1,0 +1,187 @@
+:root {
+    --main-color: cyan;
+    --secondary-color: pink;
+    --third-color: violet;
+
+    --bg-text-size: 3rem;
+    --md-text-size: 1.6rem;
+    --sm-text-size: 0.8rem;
+
+    --border-radius: 25px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+
+    display: grid;
+    grid-template-rows: 8% 1fr 5%;
+    grid-template-areas: "header" "main" "footer";
+}
+
+header {
+    background-color: var(--main-color);
+    grid-area: header;
+}
+
+main {
+    background-color: var(--secondary-color);
+    grid-area: main;
+
+    display: grid;
+    grid-template-rows: 20% 20% 1fr;
+}
+
+footer {
+    background-color: var(--third-color);
+    grid-area: footer;
+}
+
+.header--text {
+    display: grid;
+    place-items: center;
+}
+
+.main--container {
+    width: 100%;
+
+    margin-top: 50px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-units {
+    width: 60%;
+    height: 3.2rem;
+
+    display: flex;
+}
+
+.input--container {
+    position: relative;
+}
+
+.input--container__input {
+    width: 100%;
+    height: 100%;
+
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+
+    padding-left: 10px;
+}
+
+/*
+    Show the label at desired position when the 
+    placeholder of input isn't shown
+*/
+.input--container__input:not(:placeholder-shown) + .input--container__label {
+    background: transparent;
+    transform: translate(5%, -95%);
+    opacity: 1;
+}
+
+.input--container__label {
+    /* Position the label */
+    left: 8px;
+    position: absolute;
+    top: 0;
+
+    /* Hide it by default */
+    opacity: 0;
+    transition: all 200ms;
+}
+
+.input-units .input--container {
+    flex: 3;
+    height: 100%;
+}
+
+.input-units--select {
+    flex: 1;
+    max-width: 35%;
+
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
+}
+
+.input--container__error {
+    color: red;
+    
+    margin: 10px 0;
+}
+
+.main--button__container {
+    padding-top: var(--md-text-size);
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.main--button {
+    border-radius: var(--border-radius);
+
+    width: 25%;
+    height: var(--bg-text-size);
+
+    transition: all 0.2s;
+}
+
+.main--button:hover {
+    cursor: pointer;
+
+    transform: scale(0.97);    
+    background-color: var(--third-color);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.main--result__container {
+    display: flex;
+    justify-content: center;
+}
+
+.main--result {
+    text-align: center;
+    font-size: var(--md-text-size);
+}
+
+.main--result__value::before{
+    content: "\a";
+    white-space: pre;
+}
+
+.main--result__loader{
+    text-align: center;
+    font-size: var(--md-text-size);
+}
+
+.footer--text {
+    display: grid;
+    place-items: center;
+}
+
+/* STATES */
+.hidden {
+    display: none;
+}
+
+.warning {
+    border: 3px solid red;
+    outline: red;
+}
