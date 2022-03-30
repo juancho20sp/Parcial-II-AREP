@@ -70,7 +70,7 @@ const sendRequest = async () => {
         const operation = operationSelect.value === '0' ? 'cos' : 'exp';
         const value = valueInput.value;
 
-        const url = `${BASE_URL}/${operation}?value=${value}`;
+        const url = `${BASE_URL}/api/v1/${operation}?value=${value}`;
 
         try {
             // Show loader
@@ -99,6 +99,9 @@ const sendRequest = async () => {
         } finally {
             resultLoader.classList.add(HIDDEN);
         }
+
+        // Rotate server
+        rotateServer();
         
     }
 }

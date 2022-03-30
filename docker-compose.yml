@@ -39,32 +39,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-#    container_name: web
     ports:
-      - "8087-8089:6000"
-    links:
-      - db
-
-#  web2:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    container_name: web2
-#    ports:
-#      - "8088:6000"
-#    links:
-#      - db
-#
-#  web3:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    container_name: web3
-#    ports:
-#      - "8089:6000"
-#    links:
-#      - db
-
+      - "8087-8088:6000"
   html:
     build:
       context: ./Frontend/
@@ -74,17 +50,3 @@ services:
       - "80:80"
     links:
       - web
-#      - web2
-#      - web3
-
-  db:
-    image: mongo:3.6.1
-    container_name: db
-    volumes:
-      - mongodb:/data/db
-      - mongodb_config:/data/configdb
-    command: mongod
-
-volumes:
-  mongodb:
-  mongodb_config:
