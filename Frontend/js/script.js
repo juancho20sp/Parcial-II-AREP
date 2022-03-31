@@ -1,6 +1,6 @@
 // Config
 const port = 4567;
-let BASE_URL = `http://ec2-54-164-181-130.compute-1.amazonaws.com:${port}`;
+let BASE_URL = `http://${window.location.hostname}:${port}`;
 //http://ec2-54-166-93-83.compute-1.amazonaws.com:8087/
 
 // Round Robin
